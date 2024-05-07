@@ -4,7 +4,7 @@
 clear
 
 # Check if the init script has already been used
-if [ "$XANMOD_INSTALLER" = true ]; then
+if [[ "$XANMOD_INSTALLER" = true ]]; then
     echo "The XanMod installer has already been used."
     exit 1
 fi
@@ -21,15 +21,19 @@ BEGIN {
     exit
 }')
 
+# Check if XanMod is supported
 if [[ ! "$XANMOD_VERSION" =~ ^[1-4]$ ]]; then
-    echo "Failed to determine XanMod version."
+    echo "XanMod is not supported with your CPU."
     exit 1
 fi
 
 # Choose a XanMod distribution
 XANMOD_DISTRIBUTION_VALID=false
-while [ $XANMOD_DISTRIBUTION_VALID = false ]; do
-    clear
+while [[ $XANMOD_DISTRIBUTION_VALID = false ]]; do
+    if [[ ! $XANMOD_DISTRIBUTION ]]; then
+        clear
+    fi
+    
     echo "XanMod Distributions:"
     echo "[0] - Stable Mainline [MAIN]"
     echo "[1] - Long Term Support [LTS]"
@@ -43,9 +47,11 @@ while [ $XANMOD_DISTRIBUTION_VALID = false ]; do
         XANMOD_DISTRIBUTION_VALID=true
     else
         echo "Invalid option. Please, select a valid option."
+        echo
     fi
 done
 
+# Get XanMod distribution based on the given option.
 show_xanmod_distribution() {
     case $1 in
         0)
@@ -60,23 +66,19 @@ show_xanmod_distribution() {
     esac
 }
 
-# Confirm the installation
-CONFIRM=false
-while [ $CONFIRM = false ]; do
-    clear
-    echo "Information:"
-    echo "- Distribution: XanMod $(show_xanmod_distribution $XANMOD_DISTRIBUTION) v$XANMOD_VERSION"
-    echo
-    
-    read -rp "Confirm installation (y/N): " CONFIRM
-    # Check if is a valid option
-    if [[ "$CONFIRM" =~ [Yy] ]]; then
-        CONFIRM=true
-    else
-        echo "Installation aborted."
-        exit 0
-    fi
-done
+# Confirm installation
+clear
+echo "Information:"
+echo "- Distribution: XanMod $(show_xanmod_distribution $XANMOD_DISTRIBUTION) v$XANMOD_VERSION"
+echo
+
+read -rp "Confirm installation (y/N): " CONFIRM
+# Check if is a valid option
+if [[ ! "$CONFIRM" =~ [Yy] ]]; then
+    echo "Installation aborted."
+    exit 0
+fi
+
 
 # Install XanMod
 apt update && apt upgrade -y

@@ -19,7 +19,7 @@ List of supported operating system (installations supported by this installation
 To use the installation scripts, simply run this command as root. The script will ask you whether distribution you would like to install.
 
 ```bash
-bash <(wget -qO - https://raw.githubusercontent.com/WitchBoo/xanmod-installer/master/install.sh)
+bash <(wget -qO - https://raw.githubusercontent.com/WitchBoo/xanmod-installer/master/installer.sh)
 ```
 
 ## License
