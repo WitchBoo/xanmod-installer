@@ -3,6 +3,13 @@
 # Clear terminal
 clear
 
+# Check if operating system is supported
+source /etc/os-release
+if [[ "$ID" != "debian" || ! "$VERSION_ID"  =~ ^[11-12]$ ]]; then
+    echo "The script doesn't support your operating system."
+    exit 1
+fi
+
 # Check if XanMod is installed
 if cat /proc/version | grep -q "xanmod"; then
     echo "XanMod is already installed."
