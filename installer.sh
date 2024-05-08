@@ -58,6 +58,16 @@ while [[ $XANMOD_DISTRIBUTION_VALID = false ]]; do
     fi
 done
 
+# Choose if the machine should restart after installation
+RESTART_MACHINE=false
+clear
+
+read -rp "Restart machine after installation (y/N): " RESTART
+# Check if is a valid option
+if [[ "$RESTART" =~ [Yy] ]]; then
+    RESTART_MACHINE=true
+fi
+
 # Get XanMod distribution based on the given option.
 show_xanmod_distribution() {
     case $1 in
@@ -77,6 +87,7 @@ show_xanmod_distribution() {
 clear
 echo "Information:"
 echo "- Distribution: XanMod $(show_xanmod_distribution $XANMOD_DISTRIBUTION) v$XANMOD_VERSION"
+echo "- Restart machine after installation: $(if [[ "$RESTART_MACHINE" = true ]]; then echo "yes"; else echo "no"; fi)"
 echo
 
 read -rp "Confirm installation (y/N): " CONFIRM
@@ -106,7 +117,10 @@ case $XANMOD_DISTRIBUTION in
     ;;
 esac
 
-# Restart the machine.
 echo "Installation script is done."
-echo "The machine will be restarted in 10 seconds."
-sleep 10 && sudo shutdown -r now
+
+# Restart the machine.
+if [[ "$RESTART_MACHINE" = true ]]; then
+    echo "The machine will be restarted in 10 seconds."
+    sleep 10 && sudo shutdown -r now
+fi
