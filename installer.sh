@@ -3,9 +3,9 @@
 # Clear terminal
 clear
 
-# Check if the init script has already been used
-if [[ "$XANMOD_INSTALLER" = true ]]; then
-    echo "The XanMod installer has already been used."
+# Check if XanMod is installed
+if cat /proc/version | grep -q "xanmod"; then
+    echo "XanMod is already installed."
     exit 1
 fi
 
@@ -98,9 +98,6 @@ case $XANMOD_DISTRIBUTION in
         apt install linux-xanmod-rt-x64v$XANMOD_VERSION -y
     ;;
 esac
-
-# Add variable to indicate it's finished.
-echo -e "\nexport XANMOD_INSTALLER=true" >> /etc/profile
 
 # Restart the machine.
 echo "Installation script is done."
