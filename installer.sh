@@ -4,9 +4,14 @@
 clear
 
 # Check if operating system is supported
-source /etc/os-release
-if [[ "$ID" != "debian" || ! "$VERSION_ID"  =~ ^[11-12]$ ]]; then
-    echo "The script doesn't support your operating system."
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    if [ "$ID" != "debian" ] || ! [[ "$VERSION_ID" =~ ^(11|12)$ ]]; then
+        echo "The script doesn't support your operating system."
+        exit 1
+    fi
+else
+    echo "Unable to determine operating system."
     exit 1
 fi
 
