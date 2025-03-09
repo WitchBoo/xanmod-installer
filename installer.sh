@@ -106,8 +106,8 @@ fi
 # Install XanMod
 apt update && apt upgrade -y
 apt install -y dirmngr ca-certificates software-properties-common apt-transport-https dkms curl
-curl -fSsL https://dl.xanmod.org/gpg.key | sudo gpg --dearmor | sudo tee /usr/share/keyrings/xanmod.gpg > /dev/null
-echo 'deb [signed-by=/usr/share/keyrings/xanmod.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
+curl -fSsL https://dl.xanmod.org/archive.key | sudo gpg --dearmor | sudo tee /usr/share/keyrings/xanmod-archive-keyring.gpg > /dev/null
+echo 'deb [signed-by=/etc/apt/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-release.list
 apt update && apt upgrade -y
 echo "Installing XanMod $(show_xanmod_distribution $XANMOD_DISTRIBUTION) v$XANMOD_VERSION..."
 case $XANMOD_DISTRIBUTION in
